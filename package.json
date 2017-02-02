@@ -1,0 +1,25 @@
+{
+  "name": "tasq",
+  "version": "1.0.0",
+  "description": "Queue Data structure with event emitters",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "webpack",
+    "build": "webpack && webpack -p"
+  },
+  "keywords": [
+    "queue",
+    "data",
+    "structure",
+    "array"
+  ],
+  "author": "Chimeremeze Ukah <bliss@ghostffco.de>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.22.0",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^1.16.3"
+  }
+}
