@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["Tasq"] = factory();
+		exports["TasQue"] = factory();
 	else
-		root["Tasq"] = factory();
+		root["TasQue"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -403,24 +403,32 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var EventEmitter = __webpack_require__(0).EventEmitter;
 
-var Tasq = function (_EventEmitter) {
-  _inherits(Tasq, _EventEmitter);
+var TasQue = function (_EventEmitter) {
+  _inherits(TasQue, _EventEmitter);
 
   /**
-   * constructo => set default values
+   * constructor => set default values
    * @type {Array}
    * @type {Number}
    */
-  function Tasq() {
+  function TasQue() {
     var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
     var limit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : -1;
 
-    _classCallCheck(this, Tasq);
+    _classCallCheck(this, TasQue);
 
-    var _this = _possibleConstructorReturn(this, (Tasq.__proto__ || Object.getPrototypeOf(Tasq)).call(this));
+    var _this = _possibleConstructorReturn(this, (TasQue.__proto__ || Object.getPrototypeOf(TasQue)).call(this));
 
-    _this.data = data;
-    _this.limit = limit;
+    if (data instanceof Array) {
+      _this.data = data;
+    } else {
+      _this.data = [data];
+    }
+
+    if (typeof limit === 'number') {
+      _this.limit = limit;
+    }
+
     return _this;
   }
 
@@ -431,13 +439,24 @@ var Tasq = function (_EventEmitter) {
    */
 
 
-  _createClass(Tasq, [{
+  _createClass(TasQue, [{
     key: 'enqueue',
     value: function enqueue(data) {
-      // emit event on enqueue
-      this.emit('enqueue', data);
-      return this.data.push(data);
-      // return this.data.push(data);
+
+      if (!this.isFull) {
+        // emit event on enqueue
+        this.emit('enqueue', data);
+        var queueResult = this.data.push(data);
+
+        if (this.isFull()) {
+          this.emit('lastEnqueue', data);
+        }
+
+        return queueResult;
+      } else {
+        this.emit('fullQueue', data);
+        return data;
+      }
     }
 
     /**
@@ -448,12 +467,33 @@ var Tasq = function (_EventEmitter) {
   }, {
     key: 'dequeue',
     value: function dequeue() {
-      return this.data.shift();
+      if (!this.isEmpty()) {
+        var queueResult = this.data.shift();
+
+        // emit event on dequeue
+        this.emit('dequeue', queueResult);
+
+        // emit if was last
+        if (this.isEmpty()) {
+          this.emit('lastDequeue', queueResult);
+        }
+
+        return queueResult;
+      } else {
+
+        this.emit('queueless');
+        return undefined;
+      }
     }
   }, {
     key: 'isEmpty',
     value: function isEmpty() {
       return this.data.length < 1 ? true : false;
+    }
+  }, {
+    key: 'isFull',
+    value: function isFull() {
+      return this.limit === this.data.length ? true : false;
     }
 
     /**
@@ -471,13 +511,13 @@ var Tasq = function (_EventEmitter) {
     }
   }]);
 
-  return Tasq;
+  return TasQue;
 }(EventEmitter);
 
 // we export the class instance via a function call
 
 
-module.exports = Tasq;
+module.exports = TasQue;
 
 /***/ })
 /******/ ]);

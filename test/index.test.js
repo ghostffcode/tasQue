@@ -8,27 +8,27 @@ q.on('enqueue', (data) => {
   console.log(`Enqueue:: Added ${data}`);
 });
 //
-// q.on('lastEnqueue', () => {
-//   console.log('Last Enqueue:: Queue limit reached');
-// });
-//
-// q.on('dequeue', (data) => {
-//   console.log(`Dequeue:: removed ${data}`);
-// });
-//
-// q.on('lastDequeue', (data) => {
-//   console.log(`Last Dequeue:: Last data is ${data}`);
-// });
-//
-// q.on('queueless', () => {
-//   console.log(`Queue is empty`)
-// })
+q.on('lastEnqueue', () => {
+  console.log('Last Enqueue:: Queue limit reached');
+});
+
+q.on('dequeue', (data) => {
+  console.log(`Dequeue:: removed ${data}`);
+});
+
+q.on('lastDequeue', (data) => {
+  console.log(`Last Dequeue:: Last data is ${data}`);
+});
+
+q.on('queueless', () => {
+  console.log(`Queue is empty`)
+})
 //
 // Enqueue
 q.enqueue('Bliss');
 q.enqueue('Lavie');
 
-q.peek();
+console.log(q.peek());
 
 // Dequeue
 q.dequeue();

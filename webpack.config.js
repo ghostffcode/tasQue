@@ -18,7 +18,7 @@ module.exports = (function () {
 
   // output file and path
   config.output = {
-    library: 'Tasq',
+    library: 'TasQue',
     libraryTarget: 'umd',
     path: path.resolve(__dirname, 'dist'),
     filename: (prod) ? 'tasq.min.js' : 'tasq.js'
